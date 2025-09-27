@@ -287,53 +287,6 @@ export default function Profile() {
                 </Card>
               </motion.div>
 
-              {/* New: Account Stats */}
-              {isAuthenticated && (
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6"
-                >
-                  <Card className="border-0 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm text-muted-foreground">Total Orders</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">0</div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-0 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm text-muted-foreground">Wishlist</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{wishlistCount}</div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-0 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm text-muted-foreground">Rewards</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{rewardsPoints}</div>
-                      <div className="text-xs text-muted-foreground mt-1">points</div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-0 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm text-muted-foreground">Collections</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{uniqueCollections.length}</div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )}
-
               {/* New: Recent Favorites (from Wishlist) */}
               {isAuthenticated && (
                 <motion.div
