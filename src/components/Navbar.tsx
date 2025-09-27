@@ -22,7 +22,7 @@ const navigation = [
 export default function Navbar() {
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();
-  const { items, total, count, removeItem, clearCart } = useCart();
+  const { items, total, count, removeItem, clearCart, setQuantity } = useCart();
   const { items: wishlistItems, count: wishlistCount, toggle: toggleWishlist } = useWishlist();
 
   return (
@@ -133,28 +133,72 @@ export default function Navbar() {
                 </div>
                 <Separator />
                 <ScrollArea className="h-[60vh]">
-                  <div className="p-4 space-y-3">
+                  <div className="p-4 space-y-4">
                     {items.length === 0 && (
-                      <div className="text-sm text-muted-foreground">Your cart is empty.</div>
+                      <div className="text-sm text-muted-foreground text-center py-10">
+                        Your cart is empty.
+                      </div>
                     )}
                     {items.map((i) => (
-                      <div key={i.id} className="flex gap-3 items-center">
-                        <img
-                          src={i.image || "/placeholder-product.jpg"}
-                          alt={i.name}
-                          className="h-14 w-14 rounded object-cover"
-                          loading="lazy"
-                        />
-                        <div className="flex-1">
-                          <div className="text-sm font-medium line-clamp-1">{i.name}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {i.storage || ""} {i.collection ? `• ${i.collection}` : ""}
+                      <div key={i.id} className="space-y-3">
+                        <div className="flex gap-3 items-center">
+                          <img
+                            src={i.image || "/placeholder-product.jpg"}
+                            alt={i.name}
+                            className="h-16 w-16 rounded object-cover"
+                            loading="lazy"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium line-clamp-1">{i.name}</div>
+                            <div className="text-xs text-muted-foreground">
+                              {i.storage || ""} {i.collection ? `• ${i.collection}` : ""}
+                            </div>
+                            <div className="mt-1 text-xs text-muted-foreground">
+                              ${i.price.toFixed(2)} each
+                            </div>
                           </div>
-                          <div className="text-sm">${(i.price * i.quantity).toFixed(2)} ({i.quantity}×)</div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeItem(i.id)}
+                            aria-label="Remove"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={() => removeItem(i.id)} aria-label="Remove">
-                          <X className="h-4 w-4" />
-                        </Button>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => setQuantity(i.id, i.quantity - 1)}
+                              aria-label="Decrease quantity"
+                              disabled={i.quantity <= 1}
+                            >
+                              -
+                            </Button>
+                            <div className="w-10 text-center text-sm font-medium select-none">
+                              {i.quantity}
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => setQuantity(i.id, i.quantity + 1)}
+                              aria-label="Increase quantity"
+                              disabled={i.quantity >= 99}
+                            >
+                              +
+                            </Button>
+                          </div>
+                          <div className="text-sm font-semibold">
+                            ${(i.price * i.quantity).toFixed(2)}
+                          </div>
+                        </div>
+
+                        <Separator />
                       </div>
                     ))}
                   </div>
