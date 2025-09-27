@@ -11,13 +11,14 @@ import { useQuery, useMutation } from "convex/react";
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Star, Users, Package, Shield } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function Landing() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const navigate = useNavigate();
   
   const products = useQuery(api.products.list, { sortBy: "name", sortOrder: "asc" });
   const collections = useQuery(api.products.getCollections);
@@ -29,19 +30,7 @@ export default function Landing() {
 
   const handleNotifyMe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-
-    setIsLoading(true);
-    try {
-      await subscribe({ email, source: "homepage" });
-      toast.success("You'll be notified when we launch!");
-      setEmail("");
-      setSubscribed(true);
-    } catch (error) {
-      toast.error("Failed to subscribe. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    navigate("/auth");
   };
 
   const featuredProducts = products?.slice(0, 4) || [];
