@@ -2,7 +2,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
 import { Link } from "react-router";
@@ -10,6 +9,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Profile() {
   const { isAuthenticated, user, signOut } = useAuth();
+  const initials = String(user?.name ?? user?.email ?? "U").trim().slice(0, 2).toUpperCase();
 
   return (
     <div className="min-h-screen">
@@ -50,15 +50,9 @@ export default function Profile() {
             >
               <div className="p-6 sm:p-8">
                 <div className="flex items-center gap-4 sm:gap-6">
-                  <Avatar className="h-16 w-16 sm:h-20 sm:w-20 ring-2 ring-primary/20">
-                    <AvatarImage src="" alt={user?.name ?? "User"} />
-                    <AvatarFallback className="font-semibold">
-                      {String(user?.name ?? user?.email ?? "U")
-                        .trim()
-                        .slice(0, 2)
-                        .toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+                  <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-primary/10 ring-2 ring-primary/20 flex items-center justify-center text-lg font-semibold">
+                    {initials}
+                  </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h2 className="text-2xl font-bold truncate">
