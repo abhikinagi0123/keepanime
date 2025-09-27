@@ -42,6 +42,7 @@ export default function Product() {
   const [open, setOpen] = useState(false); // Add dialog state
   const [email, setEmail] = useState(""); // Add email input state
   const [submitting, setSubmitting] = useState(false); // Add submitting state
+  const [added, setAdded] = useState(false); // Added: feedback state
   const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
   const { addItem } = useCart();
   const { toggle: toggleWishlist, has } = useWishlist();
@@ -81,6 +82,9 @@ export default function Product() {
       storage: product.storage,
       collection: product.collection,
     }, 1);
+    // Added: transient "Added" state
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
   };
 
   return (
@@ -195,16 +199,17 @@ export default function Product() {
                     onClick={() =>
                       product.isPreOrder
                         ? isAuthenticated
-                          ? handleAddToCart() // If logged in and pre-order, convert to Add to Cart
-                          : navigate("/auth") // If not logged in, go to auth
+                          ? handleAddToCart() // logged in: Add to Cart for pre-order
+                          : navigate("/auth") // not logged in: go to auth
                         : handleAddToCart()
                     }
+                    disabled={product.isPreOrder ? (isAuthenticated ? added : false) : added}
                   >
                     {product.isPreOrder
                       ? isAuthenticated
-                        ? "Add to Cart"
+                        ? (added ? "Added" : "Add to Cart")
                         : "Notify Me at Launch"
-                      : "Add to Cart"}
+                      : (added ? "Added" : "Add to Cart")}
                   </Button>
                   <Link to={`/shop?collection=${encodeURIComponent(product.collection)}`}>
                     <Button variant="outline">View more in {product.collection}</Button>

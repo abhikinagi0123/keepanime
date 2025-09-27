@@ -37,6 +37,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [open, setOpen] = useState(false); // Add dialog state
   const [email, setEmail] = useState(""); // Add email input state
   const [submitting, setSubmitting] = useState(false); // Add submitting state
+  const [added, setAdded] = useState(false); // Added: feedback state
   const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
   const { addItem } = useCart();
   const { toggle: toggleWishlist, has } = useWishlist();
@@ -53,6 +54,9 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       storage: product.storage,
       collection: product.collection,
     }, 1);
+    // Added: transient "Added" state
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
   };
 
   const handleNotify = async () => {
@@ -158,8 +162,8 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           </Link>
           {product.isPreOrder ? (
             isAuthenticated ? (
-              <Button size="sm" className="flex-1" onClick={handleAddToCart}>
-                Add to Cart
+              <Button size="sm" className="flex-1" onClick={handleAddToCart} disabled={added}>
+                {added ? "Added" : "Add to Cart"}
               </Button>
             ) : (
               <Button
@@ -171,8 +175,8 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
               </Button>
             )
           ) : (
-            <Button size="sm" className="flex-1" onClick={handleAddToCart}>
-              Add to Cart
+            <Button size="sm" className="flex-1" onClick={handleAddToCart} disabled={added}>
+              {added ? "Added" : "Add to Cart"}
             </Button>
           )}
         </CardFooter>
