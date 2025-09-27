@@ -254,11 +254,18 @@ export default function Navbar() {
                 </Button>
               </>
             ) : (
-              <Link to="/auth">
-                <Button variant="outline" size="sm">
-                  Sign In
-                </Button>
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link to="/auth">
+                  <Button variant="outline" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/auth">
+                  <Button size="sm">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
             )}
           </div>
 
@@ -294,9 +301,18 @@ export default function Navbar() {
                         </Button>
                       </div>
                     ) : (
-                      <Link to="/auth">
-                        <Button className="w-full">Sign In</Button>
-                      </Link>
+                      <div className="space-y-2">
+                        <Link to="/auth">
+                          <Button className="w-full" variant="outline">
+                            Sign In
+                          </Button>
+                        </Link>
+                        <Link to="/auth">
+                          <Button className="w-full">
+                            Sign Up
+                          </Button>
+                        </Link>
+                      </div>
                     )}
                   </div>
                 </div>
