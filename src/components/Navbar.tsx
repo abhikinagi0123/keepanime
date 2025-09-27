@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { Menu, ShoppingBag, User } from "lucide-react";
+import { useWishlist } from "@/hooks/use-wishlist";
+import { Menu, ShoppingBag, User, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router";
 import { Separator } from "@/components/ui/separator";
@@ -22,6 +23,7 @@ export default function Navbar() {
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();
   const { items, total, count, removeItem, clearCart } = useCart();
+  const { count: wishlistCount } = useWishlist();
 
   return (
     <motion.nav
@@ -58,6 +60,15 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
+            <Button variant="ghost" size="icon" className="relative" aria-label="Wishlist">
+              <Heart className="h-5 w-5" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 h-4 min-w-4 px-1 rounded-full bg-primary text-[10px] text-primary-foreground flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Button>
+
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative">

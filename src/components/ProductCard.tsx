@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Eye, Heart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -86,7 +87,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             />
           </Link>
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
-          <div className="absolute top-2 right-2 opacity-100 transition-opacity duration-300">
+          <div className="absolute top-2 right-2 flex gap-2 opacity-100 transition-opacity duration-300">
             <Button
               variant={wished ? "default" : "secondary"}
               size="icon"
@@ -105,6 +106,18 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             >
               <Heart className={`h-4 w-4 ${wished ? "fill-current" : ""}`} />
             </Button>
+
+            {!product.isPreOrder && (
+              <Button
+                variant="secondary"
+                size="icon"
+                className="h-8 w-8"
+                aria-label="Add to cart"
+                onClick={handleAddToCart}
+              >
+                <ShoppingCart className="h-4 w-4" />
+              </Button>
+            )}
           </div>
           {product.isPreOrder && (
             <Badge className="absolute top-2 left-2 bg-primary">
