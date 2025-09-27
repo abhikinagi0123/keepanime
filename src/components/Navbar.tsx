@@ -23,7 +23,7 @@ export default function Navbar() {
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();
   const { items, total, count, removeItem, clearCart } = useCart();
-  const { count: wishlistCount } = useWishlist();
+  const { items: wishlistItems, count: wishlistCount, toggle: toggleWishlist } = useWishlist();
 
   return (
     <motion.nav
@@ -60,14 +60,58 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="relative" aria-label="Wishlist">
-              <Heart className="h-5 w-5" />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-4 min-w-4 px-1 rounded-full bg-primary text-[10px] text-primary-foreground flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )}
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative" aria-label="Wishlist">
+                  <Heart className="h-5 w-5" />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 h-4 min-w-4 px-1 rounded-full bg-primary text-[10px] text-primary-foreground flex items-center justify-center">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[360px] sm:w-[420px] p-0">
+                <div className="p-4 flex items-center justify-between">
+                  <div className="font-semibold">Your Wishlist</div>
+                </div>
+                <Separator />
+                <ScrollArea className="h-[60vh]">
+                  <div className="p-4 space-y-3">
+                    {wishlistItems.length === 0 && (
+                      <div className="text-sm text-muted-foreground">Your wishlist is empty.</div>
+                    )}
+                    {wishlistItems.map((i) => (
+                      <div key={i.id} className="flex gap-3 items-center">
+                        <img
+                          src={i.image || "/placeholder-product.jpg"}
+                          alt={i.name}
+                          className="h-14 w-14 rounded object-cover"
+                          loading="lazy"
+                        />
+                        <div className="flex-1">
+                          <div className="text-sm font-medium line-clamp-1">{i.name}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {i.storage || ""} {i.collection ? `• ${i.collection}` : ""}
+                          </div>
+                          {typeof i.price === "number" && (
+                            <div className="text-sm">${i.price.toFixed(2)}</div>
+                          )}
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => toggleWishlist(i)}
+                          aria-label="Remove from wishlist"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </SheetContent>
+            </Sheet>
 
             <Sheet>
               <SheetTrigger asChild>
