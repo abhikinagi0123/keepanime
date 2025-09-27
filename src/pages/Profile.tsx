@@ -144,6 +144,34 @@ export default function Profile() {
                         {user?.role ?? "user"}
                       </div>
                     </div>
+
+                    <div>
+                      <div className="text-muted-foreground">Phone</div>
+                      <div className="font-medium break-all">
+                        {(user as any)?.phone ?? "—"}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-muted-foreground">Address</div>
+                      <div className="font-medium">
+                        {(user as any)?.address ?? "—"}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-muted-foreground">Payment Method</div>
+                      <div className="font-medium">
+                        {(user as any)?.paymentMethod ?? "—"}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-muted-foreground">Notifications</div>
+                      <div className="font-medium">
+                        {((user as any)?.notifications ?? false) ? "Enabled" : "Disabled"}
+                      </div>
+                    </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
                     This information is private to your account.
