@@ -246,7 +246,7 @@ export default function Navbar() {
             ) : (
               <Link to="/auth">
                 <Button variant="outline" size="sm">
-                  Sign In
+                  Sign Up
                 </Button>
               </Link>
             )}
@@ -285,7 +285,7 @@ export default function Navbar() {
                       </div>
                     ) : (
                       <Link to="/auth">
-                        <Button className="w-full">Sign In</Button>
+                        <Button className="w-full">Sign Up</Button>
                       </Link>
                     )}
                   </div>
