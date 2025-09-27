@@ -43,7 +43,7 @@ export default function Product() {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const subscribe = useMutation(api.newsletter.subscribe);
-  const { addItem, items } = useCart();
+  const { addItem, items, removeItem } = useCart();
   const { toggle: toggleWishlist, has } = useWishlist();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -76,15 +76,21 @@ export default function Product() {
 
   const handleAddToCart = () => {
     if (!product) return;
-    if (inCart) return;
-    addItem({
-      id: product._id as unknown as string,
-      name: product.name,
-      price: product.price,
-      image: product.images?.[0],
-      storage: product.storage,
-      collection: product.collection,
-    }, 1);
+    if (inCart) {
+      removeItem(product._id as unknown as string);
+      return;
+    }
+    addItem(
+      {
+        id: product._id as unknown as string,
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0],
+        storage: product.storage,
+        collection: product.collection,
+      },
+      1,
+    );
   };
 
   return (
@@ -203,7 +209,6 @@ export default function Product() {
                           : navigate("/auth")
                         : handleAddToCart()
                     }
-                    disabled={product.isPreOrder ? (isAuthenticated ? inCart : false) : inCart}
                   >
                     {product.isPreOrder
                       ? isAuthenticated

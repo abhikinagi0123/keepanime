@@ -38,7 +38,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [email, setEmail] = useState(""); // Add email input state
   const [submitting, setSubmitting] = useState(false); // Add submitting state
   const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
-  const { addItem, items } = useCart();
+  const { addItem, items, removeItem } = useCart();
   const { toggle: toggleWishlist, has } = useWishlist();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -46,15 +46,21 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const inCart = items.some((i) => i.id === product._id);
 
   const handleAddToCart = () => {
-    if (inCart) return;
-    addItem({
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      image: product.images?.[0],
-      storage: product.storage,
-      collection: product.collection,
-    }, 1);
+    if (inCart) {
+      removeItem(product._id); // Toggle off
+      return;
+    }
+    addItem(
+      {
+        id: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0],
+        storage: product.storage,
+        collection: product.collection,
+      },
+      1,
+    );
   };
 
   const handleNotify = async () => {
@@ -160,7 +166,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           </Link>
           {product.isPreOrder ? (
             isAuthenticated ? (
-              <Button size="sm" className="flex-1" onClick={handleAddToCart} disabled={inCart}>
+              <Button size="sm" className="flex-1" onClick={handleAddToCart}>
                 {inCart ? "Added" : "Add to Cart"}
               </Button>
             ) : (
@@ -173,7 +179,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
               </Button>
             )
           ) : (
-            <Button size="sm" className="flex-1" onClick={handleAddToCart} disabled={inCart}>
+            <Button size="sm" className="flex-1" onClick={handleAddToCart}>
               {inCart ? "Added" : "Add to Cart"}
             </Button>
           )}

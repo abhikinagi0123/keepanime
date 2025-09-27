@@ -125,20 +125,22 @@ export default function Navbar() {
                                   size="sm"
                                   className="w-full"
                                   onClick={() => {
-                                    if (inCart) return;
-                                    addItem(
-                                      {
-                                        id: i.id,
-                                        name: i.name,
-                                        price: i.price,
-                                        image: i.image,
-                                        storage: i.storage,
-                                        collection: i.collection,
-                                      },
-                                      1
-                                    );
+                                    if (inCart) {
+                                      removeItem(i.id); // Toggle off
+                                    } else {
+                                      addItem(
+                                        {
+                                          id: i.id,
+                                          name: i.name,
+                                          price: i.price,
+                                          image: i.image,
+                                          storage: i.storage,
+                                          collection: i.collection,
+                                        },
+                                        1
+                                      );
+                                    }
                                   }}
-                                  disabled={inCart}
                                 >
                                   {inCart ? "Added" : "Add to Cart"}
                                 </Button>
