@@ -106,8 +106,8 @@ export default function Profile() {
                 className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-white via-primary/5 to-muted/20 ring-1 ring-primary/10 shadow-sm mb-4"
               >
                 <div className="px-6 sm:px-10 py-6">
-                  {/* Adjust grid to add a right-side column on medium screens */}
-                  <div className="grid grid-cols-1 md:grid-cols-[auto,1fr,auto] items-start gap-6 lg:gap-8 text-left">
+                  {/* Adjust grid to add a right-side column on large screens */}
+                  <div className="grid grid-cols-1 lg:grid-cols-[auto,1fr,280px] items-start gap-6 lg:gap-8 text-left">
                     <div className="relative shrink-0 mx-auto md:mx-0">
                       <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-primary/10 ring-2 ring-primary/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center text-2xl font-semibold">
                         {initials}
@@ -130,7 +130,7 @@ export default function Profile() {
                       <p className="mt-1 text-sm text-muted-foreground">
                         {user?.email ?? "No email"}
                       </p>
-                      {/* Account Highlights to reduce empty space and add context */}
+                      {/* Account Highlights */}
                       <div className="mt-3 flex flex-wrap gap-2 text-sm">
                         <div className="px-3 py-1 rounded-full bg-primary/5 ring-1 ring-primary/10">
                           Rewards: {rewardsPoints}
@@ -164,9 +164,9 @@ export default function Profile() {
                       </div>
                     </div>
 
-                    {/* Right-side Quick Summary (desktop and tablet) */}
-                    <div className="hidden md:block justify-self-end self-start">
-                      <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all w-[260px]">
+                    {/* Right-side Quick Summary */}
+                    <div className="hidden lg:block justify-self-end self-start">
+                      <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all w-[280px]">
                         <CardHeader className="pb-2">
                           <CardTitle className="text-base">Quick Summary</CardTitle>
                         </CardHeader>
