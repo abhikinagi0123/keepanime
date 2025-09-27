@@ -8,7 +8,7 @@ import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 
 export default function Profile() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen">
@@ -72,6 +72,9 @@ export default function Profile() {
               <p className="text-xs text-muted-foreground">
                 This page will be expanded with order history and account settings.
               </p>
+              <Button variant="outline" onClick={signOut}>
+                Sign Out
+              </Button>
             </CardContent>
           </Card>
         )}
