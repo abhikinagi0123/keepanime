@@ -81,9 +81,6 @@ export default function Landing() {
                     Notify Me
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" onClick={() => navigate("/auth")} disabled={isLoading}>
-                    Sign Up
-                  </Button>
                 </form>
               )}
 
