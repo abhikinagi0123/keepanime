@@ -103,13 +103,13 @@ export default function Profile() {
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-white via-primary/5 to-muted/20 ring-1 ring-primary/10 shadow-sm mb-6"
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-white via-primary/5 to-muted/20 ring-1 ring-primary/10 shadow-sm mb-4"
               >
-                <div className="px-6 sm:px-10 py-8">
+                <div className="px-6 sm:px-10 py-6">
                   {/* Adjust grid to add a right-side column on medium screens */}
-                  <div className="grid grid-cols-1 md:grid-cols-[auto,1fr,auto] items-start gap-8 lg:gap-10 text-left">
+                  <div className="grid grid-cols-1 md:grid-cols-[auto,1fr,auto] items-start gap-6 lg:gap-8 text-left">
                     <div className="relative shrink-0 mx-auto md:mx-0">
-                      <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-primary/10 ring-2 ring-primary/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center text-2xl font-semibold">
+                      <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-primary/10 ring-2 ring-primary/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center text-2xl font-semibold">
                         {initials}
                       </div>
                       <div className="absolute -inset-1 rounded-full blur-xl bg-primary/10 pointer-events-none" />
@@ -143,7 +143,7 @@ export default function Profile() {
                         </div>
                       </div>
 
-                      <div className="mt-5 flex flex-wrap gap-2">
+                      <div className="mt-3 flex flex-wrap gap-2">
                         <Button
                           variant="outline"
                           className="gap-2"
