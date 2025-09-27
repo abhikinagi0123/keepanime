@@ -144,7 +144,7 @@ export default function Profile() {
                       </div>
                     </div>
 
-                    <div className="relative shrink-0 mx-auto md:mx-0 md:col-start-2">
+                    <div className="relative shrink-0 mx-auto md:mx-0 md:col-start-2 self-start">
                       <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-primary/10 ring-2 ring-primary/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center text-2xl font-semibold">
                         {initials}
                       </div>
