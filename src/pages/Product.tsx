@@ -39,15 +39,17 @@ export default function Product() {
       : "skip",
   );
 
-  const [open, setOpen] = useState(false); // Add dialog state
-  const [email, setEmail] = useState(""); // Add email input state
-  const [submitting, setSubmitting] = useState(false); // Add submitting state
-  const [added, setAdded] = useState(false); // Added: feedback state
-  const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
-  const { addItem } = useCart();
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const subscribe = useMutation(api.newsletter.subscribe);
+  const { addItem, items } = useCart();
   const { toggle: toggleWishlist, has } = useWishlist();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // derive if product is already in cart
+  const inCart = !!product && items.some((i) => i.id === (product._id as unknown as string));
 
   const handleNotify = async () => {
     if (!isAuthenticated) {
@@ -74,6 +76,7 @@ export default function Product() {
 
   const handleAddToCart = () => {
     if (!product) return;
+    if (inCart) return;
     addItem({
       id: product._id as unknown as string,
       name: product.name,
@@ -82,9 +85,6 @@ export default function Product() {
       storage: product.storage,
       collection: product.collection,
     }, 1);
-    // Added: transient "Added" state
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
   };
 
   return (
@@ -199,17 +199,17 @@ export default function Product() {
                     onClick={() =>
                       product.isPreOrder
                         ? isAuthenticated
-                          ? handleAddToCart() // logged in: Add to Cart for pre-order
-                          : navigate("/auth") // not logged in: go to auth
+                          ? handleAddToCart()
+                          : navigate("/auth")
                         : handleAddToCart()
                     }
-                    disabled={product.isPreOrder ? (isAuthenticated ? added : false) : added}
+                    disabled={product.isPreOrder ? (isAuthenticated ? inCart : false) : inCart}
                   >
                     {product.isPreOrder
                       ? isAuthenticated
-                        ? (added ? "Added" : "Add to Cart")
+                        ? (inCart ? "Added" : "Add to Cart")
                         : "Notify Me at Launch"
-                      : (added ? "Added" : "Add to Cart")}
+                      : (inCart ? "Added" : "Add to Cart")}
                   </Button>
                   <Link to={`/shop?collection=${encodeURIComponent(product.collection)}`}>
                     <Button variant="outline">View more in {product.collection}</Button>
