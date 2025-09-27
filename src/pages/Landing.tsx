@@ -42,7 +42,7 @@ export default function Landing() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background to-muted/20">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-primary/5 to-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -110,7 +110,7 @@ export default function Landing() {
                   alt="Anime Pendrive Mockup"
                   className="w-full rounded-2xl shadow-2xl"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-2xl" />
               </div>
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
@@ -120,7 +120,7 @@ export default function Landing() {
       </section>
 
       {/* Countdown Section */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 bg-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -199,7 +199,7 @@ export default function Landing() {
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-muted/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -272,7 +272,7 @@ export default function Landing() {
                 transition={{ delay: index * 0.1 }}
                 className="text-center space-y-4"
               >
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto ring-1 ring-primary/20">
+                <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto ring-1 ring-primary/10">
                   <feature.icon className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold">{feature.title}</h3>
