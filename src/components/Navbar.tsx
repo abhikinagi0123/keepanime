@@ -24,6 +24,7 @@ export default function Navbar() {
   const location = useLocation();
   const { items, total, count, removeItem, clearCart, setQuantity } = useCart();
   const { items: wishlistItems, count: wishlistCount, toggle: toggleWishlist } = useWishlist();
+  const { signOut } = useAuth() as any; // reuse hook to access signOut
 
   return (
     <motion.nav
@@ -232,11 +233,16 @@ export default function Navbar() {
             </Sheet>
 
             {isAuthenticated ? (
-              <Link to="/profile">
-                <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
+              <>
+                <Link to="/profile">
+                  <Button variant="ghost" size="icon">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <Button variant="outline" size="sm" onClick={signOut}>
+                  Sign Out
                 </Button>
-              </Link>
+              </>
             ) : (
               <Link to="/auth">
                 <Button variant="outline" size="sm">
@@ -267,11 +273,16 @@ export default function Navbar() {
                   ))}
                   <div className="pt-4 border-t">
                     {isAuthenticated ? (
-                      <Link to="/profile">
-                        <Button variant="outline" className="w-full">
-                          Profile
+                      <div className="space-y-2">
+                        <Link to="/profile">
+                          <Button variant="outline" className="w-full">
+                            Profile
+                          </Button>
+                        </Link>
+                        <Button className="w-full" variant="destructive" onClick={signOut}>
+                          Sign Out
                         </Button>
-                      </Link>
+                      </div>
                     ) : (
                       <Link to="/auth">
                         <Button className="w-full">Sign In</Button>
