@@ -195,12 +195,16 @@ export default function Product() {
                     onClick={() =>
                       product.isPreOrder
                         ? isAuthenticated
-                          ? setOpen(true)
-                          : navigate("/auth")
+                          ? handleAddToCart() // If logged in and pre-order, convert to Add to Cart
+                          : navigate("/auth") // If not logged in, go to auth
                         : handleAddToCart()
                     }
                   >
-                    {product.isPreOrder ? "Notify Me at Launch" : "Add to Cart"}
+                    {product.isPreOrder
+                      ? isAuthenticated
+                        ? "Add to Cart"
+                        : "Notify Me at Launch"
+                      : "Add to Cart"}
                   </Button>
                   <Link to={`/shop?collection=${encodeURIComponent(product.collection)}`}>
                     <Button variant="outline">View more in {product.collection}</Button>

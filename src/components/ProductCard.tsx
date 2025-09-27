@@ -157,13 +157,19 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             </Button>
           </Link>
           {product.isPreOrder ? (
-            <Button
-              size="sm"
-              className="flex-1"
-              onClick={() => (isAuthenticated ? setOpen(true) : navigate("/auth"))}
-            >
-              Notify Me
-            </Button>
+            isAuthenticated ? (
+              <Button size="sm" className="flex-1" onClick={handleAddToCart}>
+                Add to Cart
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                className="flex-1"
+                onClick={() => navigate("/auth")}
+              >
+                Notify Me
+              </Button>
+            )
           ) : (
             <Button size="sm" className="flex-1" onClick={handleAddToCart}>
               Add to Cart
