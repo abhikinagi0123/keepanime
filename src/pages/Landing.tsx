@@ -53,9 +53,11 @@ export default function Landing() {
             >
               <div className="space-y-4">
                 <Badge className="w-fit">Coming Soon</Badge>
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+                <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
                   Anime in Your
-                  <span className="text-primary block">Pocket</span>
+                  <span className="block bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                    Pocket
+                  </span>
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-lg">
                   Premium anime-themed pendrives preloaded with your favorite series. 
@@ -64,7 +66,7 @@ export default function Landing() {
               </div>
 
               {subscribed || isAuthenticated ? (
-                <div className="text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200/60 dark:border-green-800/60 rounded-md px-3 py-2 w-fit">
+                <div className="text-sm bg-gradient-to-r from-green-500/10 to-emerald-500/10 dark:from-green-500/15 dark:to-emerald-500/15 border border-green-500/30 dark:border-green-500/40 rounded-md px-3 py-2 w-fit shadow-sm">
                   You'll be notified when we launch!
                 </div>
               ) : (
@@ -74,10 +76,10 @@ export default function Landing() {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1"
+                    className="flex-1 rounded-lg"
                     disabled={isLoading}
                   />
-                  <Button type="submit" disabled={isLoading}>
+                  <Button type="submit" disabled={isLoading} className="rounded-lg shadow-sm hover:shadow transition-shadow">
                     Notify Me
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -161,20 +163,25 @@ export default function Landing() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={collection.image || "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=200&fit=crop"}
-                      alt={collection.name}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <h3 className="text-xl font-bold">{collection.name}</h3>
-                      <p className="text-sm opacity-90">{collection.count} Products</p>
+                <Link to={`/shop?collection=${encodeURIComponent(collection.name)}`} aria-label={`View ${collection.name} collection`}>
+                  <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 rounded-xl">
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={collection.image || "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=200&fit=crop"}
+                        alt={collection.name}
+                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-4 left-4 text-white">
+                        <h3 className="text-xl font-bold">{collection.name}</h3>
+                        <p className="text-sm opacity-90">{collection.count} Products</p>
+                      </div>
+                      <div className="absolute top-3 right-3 text-xs px-2 py-1 rounded-full bg-white/80 text-gray-900 shadow backdrop-blur">
+                        Explore
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -265,7 +272,7 @@ export default function Landing() {
                 transition={{ delay: index * 0.1 }}
                 className="text-center space-y-4"
               >
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto ring-1 ring-primary/20">
                   <feature.icon className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold">{feature.title}</h3>
