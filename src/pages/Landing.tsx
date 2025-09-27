@@ -13,12 +13,14 @@ import { ArrowRight, Play, Star, Users, Package, Shield } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Landing() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   
   const products = useQuery(api.products.list, { sortBy: "name", sortOrder: "asc" });
   const collections = useQuery(api.products.getCollections);
@@ -61,7 +63,7 @@ export default function Landing() {
                 </p>
               </div>
 
-              {subscribed ? (
+              {subscribed || isAuthenticated ? (
                 <div className="text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200/60 dark:border-green-800/60 rounded-md px-3 py-2 w-fit">
                   You'll be notified when we launch!
                 </div>
@@ -78,6 +80,9 @@ export default function Landing() {
                   <Button type="submit" disabled={isLoading}>
                     Notify Me
                     <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button type="button" variant="outline" onClick={() => navigate("/auth")} disabled={isLoading}>
+                    Sign Up
                   </Button>
                 </form>
               )}
