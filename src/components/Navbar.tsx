@@ -139,6 +139,11 @@ export default function Navbar() {
                       <Trash2 className="h-4 w-4" />
                       Clear
                     </Button>
+                    <SheetClose asChild>
+                      <Button variant="ghost" size="icon" aria-label="Close cart">
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </SheetClose>
                   </div>
                 </div>
                 <Separator />
