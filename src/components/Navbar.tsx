@@ -23,7 +23,8 @@ const navigation = [
 export default function Navbar() {
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();
-  const { items, total, count, removeItem, clearCart, setQuantity } = useCart();
+  // Include addItem for wishlist "Add to Cart"
+  const { items, total, count, removeItem, clearCart, setQuantity, addItem } = useCart();
   const { items: wishlistItems, count: wishlistCount, toggle: toggleWishlist } = useWishlist();
 
   return (
@@ -74,7 +75,12 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[360px] sm:w-[420px] p-0">
                 <div className="p-4 flex items-center justify-between">
-                  <div className="font-semibold">Your Wishlist</div>
+                  <div className="font-semibold flex items-center gap-2">
+                    Your Wishlist
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                      {wishlistCount}
+                    </span>
+                  </div>
                 </div>
                 <Separator />
                 <ScrollArea className="h-[60vh]">
@@ -82,33 +88,66 @@ export default function Navbar() {
                     {wishlistItems.length === 0 && (
                       <div className="text-sm text-muted-foreground">Your wishlist is empty.</div>
                     )}
-                    {wishlistItems.map((i) => (
-                      <div key={i.id} className="flex gap-3 items-center">
-                        <img
-                          src={i.image || "/placeholder-product.jpg"}
-                          alt={i.name}
-                          className="h-14 w-14 rounded object-cover"
-                          loading="lazy"
-                        />
-                        <div className="flex-1">
-                          <div className="text-sm font-medium line-clamp-1">{i.name}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {i.storage || ""} {i.collection ? `• ${i.collection}` : ""}
+                    {wishlistItems.map((i) => {
+                      const inCart = items.some((p) => p.id === i.id);
+                      return (
+                        <div key={i.id} className="rounded-lg border bg-card p-3">
+                          <div className="flex gap-3">
+                            <img
+                              src={i.image || "/placeholder-product.jpg"}
+                              alt={i.name}
+                              className="h-14 w-14 rounded object-cover"
+                              loading="lazy"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0">
+                                  <div className="text-sm font-medium line-clamp-1">{i.name}</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {i.storage || ""} {i.collection ? `• ${i.collection}` : ""}
+                                  </div>
+                                </div>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => toggleWishlist(i)}
+                                  aria-label="Remove from wishlist"
+                                  className="shrink-0"
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                              {typeof i.price === "number" && (
+                                <div className="mt-1 text-sm">${i.price.toFixed(2)}</div>
+                              )}
+                              <div className="mt-2">
+                                <Button
+                                  size="sm"
+                                  className="w-full"
+                                  onClick={() => {
+                                    if (inCart) return;
+                                    addItem(
+                                      {
+                                        id: i.id,
+                                        name: i.name,
+                                        price: i.price,
+                                        image: i.image,
+                                        storage: i.storage,
+                                        collection: i.collection,
+                                      },
+                                      1
+                                    );
+                                  }}
+                                  disabled={inCart}
+                                >
+                                  {inCart ? "Added" : "Add to Cart"}
+                                </Button>
+                              </div>
+                            </div>
                           </div>
-                          {typeof i.price === "number" && (
-                            <div className="text-sm">${i.price.toFixed(2)}</div>
-                          )}
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => toggleWishlist(i)}
-                          aria-label="Remove from wishlist"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </ScrollArea>
               </SheetContent>
