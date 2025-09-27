@@ -3,6 +3,9 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
@@ -10,6 +13,8 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Link, useParams } from "react-router";
 import ProductCard from "@/components/ProductCard";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export default function Product() {
   const { id } = useParams();
@@ -28,6 +33,30 @@ export default function Product() {
         }
       : "skip",
   );
+
+  const [open, setOpen] = useState(false); // Add dialog state
+  const [email, setEmail] = useState(""); // Add email input state
+  const [submitting, setSubmitting] = useState(false); // Add submitting state
+  const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
+
+  const handleNotify = async () => {
+    if (!email) {
+      toast.error("Please enter your email.");
+      return;
+    }
+    if (!product) return;
+    setSubmitting(true);
+    try {
+      await subscribe({ email, source: `product:${product._id}` });
+      toast.success("You'll be notified at launch!");
+      setEmail("");
+      setOpen(false);
+    } catch {
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -115,7 +144,7 @@ export default function Product() {
                 </div>
 
                 <div className="flex gap-3">
-                  <Button className="flex-1">
+                  <Button className="flex-1" onClick={() => product.isPreOrder ? setOpen(true) : null}>
                     {product.isPreOrder ? "Notify Me at Launch" : "Add to Cart"}
                   </Button>
                   <Link to={`/shop?collection=${encodeURIComponent(product.collection)}`}>
@@ -124,6 +153,32 @@ export default function Product() {
                 </div>
               </div>
             </motion.div>
+
+            {/* Notify Me Dialog */}
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Get notified for this product</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-3">
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={submitting}
+                  />
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setOpen(false)} disabled={submitting}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleNotify} disabled={submitting}>
+                    {submitting ? "Subscribing..." : "Notify Me"}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
 
             {/* Related Products */}
             {related && related.length > 0 && (

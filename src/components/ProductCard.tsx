@@ -4,6 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Eye, Heart } from "lucide-react";
 import { Link } from "react-router";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
 interface Product {
   _id: string;
@@ -23,6 +29,28 @@ interface ProductCardProps {
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   // Add consistent price formatting
   const priceDisplay = product.price.toFixed(2);
+  const [open, setOpen] = useState(false); // Add dialog state
+  const [email, setEmail] = useState(""); // Add email input state
+  const [submitting, setSubmitting] = useState(false); // Add submitting state
+  const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
+
+  const handleNotify = async () => {
+    if (!email) {
+      toast.error("Please enter your email.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await subscribe({ email, source: `product:${product._id}` });
+      toast.success("You'll be notified at launch!");
+      setEmail("");
+      setOpen(false);
+    } catch (e) {
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <motion.div
@@ -80,10 +108,42 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
               View
             </Button>
           </Link>
-          <Button size="sm" className="flex-1">
-            {product.isPreOrder ? "Notify Me" : "Add to Cart"}
-          </Button>
+          {product.isPreOrder ? (
+            <Button size="sm" className="flex-1" onClick={() => setOpen(true)}>
+              Notify Me
+            </Button>
+          ) : (
+            <Button size="sm" className="flex-1">
+              Add to Cart
+            </Button>
+          )}
         </CardFooter>
+
+        {/* Notify Me Dialog */}
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Get notified at launch</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={submitting}
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpen(false)} disabled={submitting}>
+                Cancel
+              </Button>
+              <Button onClick={handleNotify} disabled={submitting}>
+                {submitting ? "Subscribing..." : "Notify Me"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </Card>
     </motion.div>
   );
