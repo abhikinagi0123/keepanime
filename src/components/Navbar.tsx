@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
 import { useWishlist } from "@/hooks/use-wishlist";
@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { X } from "lucide-react";
+import { X, Trash2 } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -127,9 +127,24 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[360px] sm:w-[420px] p-0">
                 <div className="p-4 flex items-center justify-between">
                   <div className="font-semibold">Your Cart</div>
-                  <Button variant="ghost" size="sm" onClick={clearCart} disabled={items.length === 0}>
-                    Clear
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={clearCart}
+                      disabled={items.length === 0}
+                      className="gap-2"
+                      aria-label="Clear cart"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Clear
+                    </Button>
+                    <SheetClose asChild>
+                      <Button variant="ghost" size="icon" aria-label="Close cart">
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </SheetClose>
+                  </div>
                 </div>
                 <Separator />
                 <ScrollArea className="h-[60vh]">
