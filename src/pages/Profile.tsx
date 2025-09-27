@@ -14,6 +14,7 @@ import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function Profile() {
   const { isAuthenticated, user, signOut } = useAuth();
@@ -31,6 +32,7 @@ export default function Profile() {
   const [savingSettings, setSavingSettings] = useState(false);
   // Add: control visibility of Settings section
   const [showSettings, setShowSettings] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Add local states for preferences
   const [phone, setPhone] = useState<string>((user as any)?.phone ?? "");
@@ -133,6 +135,7 @@ export default function Profile() {
                         className="gap-2"
                         onClick={() => {
                           setShowSettings(true);
+                          setSettingsOpen(true); // open the dropdown when editing
                           // Smoothly scroll to settings after it's rendered
                           requestAnimationFrame(() => {
                             const el = document.getElementById("settings");
@@ -436,88 +439,120 @@ export default function Profile() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.25 }}
                   className="mt-6"
+                  id="settings"
                 >
-                  <Card className="border-0 shadow-sm" id="settings">
-                    <CardHeader>
-                      <CardTitle>Settings</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Display Name</div>
-                          <Input
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                            placeholder="Your name"
-                            disabled={savingSettings}
-                          />
-                        </div>
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Email</div>
-                          <Input value={user?.email ?? ""} readOnly />
-                        </div>
-
-                        {/* Added: Phone */}
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Phone</div>
-                          <Input
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            placeholder="Enter phone number"
-                            disabled={savingSettings}
-                          />
-                        </div>
-
-                        {/* Added: Address */}
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Address</div>
-                          <Input
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            placeholder="Enter address"
-                            disabled={savingSettings}
-                          />
-                        </div>
-
-                        {/* Added: Payment Method */}
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Payment Method</div>
-                          <Input
-                            value={paymentMethod}
-                            onChange={(e) => setPaymentMethod(e.target.value)}
-                            placeholder="Card ending •••• 4242"
-                            disabled={savingSettings}
-                          />
-                        </div>
-
-                        {/* New: Notifications preference */}
-                        <div className="flex items-center justify-between border rounded-md px-3 py-2">
-                          <div>
-                            <div className="text-xs text-muted-foreground mb-0.5">Notifications</div>
-                            <div className="text-xs text-muted-foreground">
-                              Receive product updates and launch alerts
-                            </div>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    value={settingsOpen ? "settings" : ""}
+                    onValueChange={(v) => setSettingsOpen(v === "settings")}
+                    className="w-full"
+                  >
+                    <AccordionItem value="settings" className="border rounded-md">
+                      <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                        <div className="flex flex-col items-start text-left w-full">
+                          <div className="font-semibold">Settings</div>
+                          <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                            {[
+                              `Name: ${String((newName || user?.name || "—")).trim()}`,
+                              `Email: ${user?.email ?? "—"}`,
+                              `Phone: ${phone || "—"}`,
+                              `Address: ${address || "—"}`,
+                              `Payment: ${paymentMethod || "—"}`,
+                              `Notifications: ${notifications ? "On" : "Off"}`
+                            ].join(" • ")}
                           </div>
-                          <Switch
-                            checked={notifications}
-                            onCheckedChange={setNotifications}
-                            disabled={savingSettings}
-                            aria-label="Toggle notifications"
-                          />
                         </div>
-                      </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-0 pb-0">
+                        <Card className="border-0 shadow-sm rounded-none border-t">
+                          <CardContent className="space-y-4 pt-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div>
+                                <div className="text-xs text-muted-foreground mb-1">Display Name</div>
+                                <Input
+                                  value={newName}
+                                  onChange={(e) => setNewName(e.target.value)}
+                                  placeholder="Your name"
+                                  disabled={savingSettings}
+                                />
+                              </div>
+                              <div>
+                                <div className="text-xs text-muted-foreground mb-1">Email</div>
+                                <Input value={user?.email ?? ""} readOnly />
+                              </div>
 
-                      <div className="flex justify-end">
-                        <Button
-                          onClick={handleSaveSettings}
-                          disabled={savingSettings}
-                          className="px-6"
-                        >
-                          {savingSettings ? "Saving..." : "Save Changes"}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                              <div>
+                                <div className="text-xs text-muted-foreground mb-1">Phone</div>
+                                <Input
+                                  value={phone}
+                                  onChange={(e) => setPhone(e.target.value)}
+                                  placeholder="Enter phone number"
+                                  disabled={savingSettings}
+                                />
+                              </div>
+
+                              <div>
+                                <div className="text-xs text-muted-foreground mb-1">Address</div>
+                                <Input
+                                  value={address}
+                                  onChange={(e) => setAddress(e.target.value)}
+                                  placeholder="Enter address"
+                                  disabled={savingSettings}
+                                />
+                              </div>
+
+                              <div>
+                                <div className="text-xs text-muted-foreground mb-1">Payment Method</div>
+                                <Input
+                                  value={paymentMethod}
+                                  onChange={(e) => setPaymentMethod(e.target.value)}
+                                  placeholder="Card ending •••• 4242"
+                                  disabled={savingSettings}
+                                />
+                              </div>
+
+                              <div className="flex items-center justify-between border rounded-md px-3 py-2">
+                                <div>
+                                  <div className="text-xs text-muted-foreground mb-0.5">Notifications</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    Receive product updates and launch alerts
+                                  </div>
+                                </div>
+                                <Switch
+                                  checked={notifications}
+                                  onCheckedChange={setNotifications}
+                                  disabled={savingSettings}
+                                  aria-label="Toggle notifications"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="flex justify-end gap-2 pt-2">
+                              <Button
+                                variant="outline"
+                                onClick={() => setSettingsOpen(false)}
+                                disabled={savingSettings}
+                              >
+                                Close
+                              </Button>
+                              <Button
+                                onClick={async () => {
+                                  await handleSaveSettings();
+                                  // reflect immediately in summary (already using local state), then close
+                                  setSettingsOpen(false);
+                                }}
+                                disabled={savingSettings}
+                                className="px-6"
+                              >
+                                {savingSettings ? "Saving..." : "Save Changes"}
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 </motion.div>
               )}
             </>
