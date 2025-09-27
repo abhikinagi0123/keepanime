@@ -129,6 +129,18 @@ export default function Profile() {
                       <p className="mt-1 text-sm text-muted-foreground">
                         {user?.email ?? "No email"}
                       </p>
+                      {/* Account Highlights to reduce empty space and add context */}
+                      <div className="mt-3 flex flex-wrap gap-2 text-sm">
+                        <div className="px-3 py-1 rounded-full bg-primary/5 ring-1 ring-primary/10">
+                          Rewards: {rewardsPoints}
+                        </div>
+                        <div className="px-3 py-1 rounded-full bg-primary/5 ring-1 ring-primary/10">
+                          Wishlist: {wishlistCount}
+                        </div>
+                        <div className="px-3 py-1 rounded-full bg-primary/5 ring-1 ring-primary/10">
+                          Collections: {uniqueCollections.length}
+                        </div>
+                      </div>
 
                       <div className="mt-5 flex flex-wrap gap-2">
                         <Button
