@@ -495,10 +495,6 @@ export default function Profile() {
                         {savingSettings ? "Saving..." : "Save Changes"}
                       </Button>
                     </div>
-
-                    <p className="text-xs text-muted-foreground">
-                      More preferences like phone, address, and payment methods will appear here in the future.
-                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
