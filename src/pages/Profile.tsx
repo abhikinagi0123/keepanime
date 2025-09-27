@@ -106,46 +106,49 @@ export default function Profile() {
                 className="relative overflow-hidden rounded-2xl border bg-gradient-to-b from-white via-primary/5 to-muted/20 mb-6"
               >
                 <div className="px-6 sm:px-10 py-8">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="relative">
+                  <div className="flex flex-col md:flex-row items-start md:items-center gap-6 text-left">
+                    <div className="relative shrink-0">
                       <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-primary/10 ring-2 ring-primary/30 shadow-[0_0_20px_rgba(0,0,0,0.15)] flex items-center justify-center text-2xl font-semibold">
                         {initials}
                       </div>
                       <div className="absolute -inset-1 rounded-full blur-xl bg-primary/10 pointer-events-none" />
                     </div>
-                    <h2 className="mt-4 text-2xl sm:text-3xl font-bold tracking-tight">
-                      {user?.name ?? "Unnamed User"}
-                    </h2>
-                    <div className="mt-2 flex items-center gap-2 flex-wrap justify-center">
-                      <Badge variant="secondary" className="text-xs">
-                        Anime Collector
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {user?.role ?? "user"}
-                      </Badge>
-                    </div>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {user?.email ?? "No email"}
-                    </p>
-                    <div className="mt-5 flex flex-col sm:flex-row gap-2">
-                      <Button
-                        variant="outline"
-                        className="gap-2"
-                        onClick={() => {
-                          setSettingsOpen(true); // open the dropdown when editing
-                          // Smoothly scroll to settings after it's rendered
-                          requestAnimationFrame(() => {
-                            const el = document.getElementById("settings");
-                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                          });
-                        }}
-                      >
-                        <Pencil className="h-4 w-4" />
-                        Edit Profile
-                      </Button>
-                      <Button variant="ghost" onClick={signOut}>
-                        Sign Out
-                      </Button>
+
+                    <div className="flex-1">
+                      <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
+                        {user?.name ?? "Unnamed User"}
+                      </h2>
+                      <div className="mt-2 flex items-center gap-2 flex-wrap">
+                        <Badge variant="secondary" className="text-xs">
+                          Anime Collector
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {user?.role ?? "user"}
+                        </Badge>
+                      </div>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {user?.email ?? "No email"}
+                      </p>
+
+                      <div className="mt-5 flex flex-col sm:flex-row gap-2">
+                        <Button
+                          variant="outline"
+                          className="gap-2"
+                          onClick={() => {
+                            setSettingsOpen(true);
+                            requestAnimationFrame(() => {
+                              const el = document.getElementById("settings");
+                              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                            });
+                          }}
+                        >
+                          <Pencil className="h-4 w-4" />
+                          Edit Profile
+                        </Button>
+                        <Button variant="ghost" onClick={signOut}>
+                          Sign Out
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
