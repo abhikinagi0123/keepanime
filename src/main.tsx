@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound.tsx";
 import Product from "./pages/Product.tsx";
 import Blog from "@/pages/Blog.tsx";
 import Contact from "@/pages/Contact.tsx";
+import Profile from "@/pages/Profile.tsx";
 import { CartProvider } from "@/hooks/use-cart";
 import { WishlistProvider } from "@/hooks/use-wishlist";
 import "./types/global.d.ts";
@@ -63,6 +64,7 @@ createRoot(document.getElementById("root")!).render(
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/collections" element={<Collections />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/product/:id" element={<Product />} />
