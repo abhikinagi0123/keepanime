@@ -29,6 +29,8 @@ export default function Profile() {
   const [newName, setNewName] = useState<string>(user?.name ?? "");
   // Unified saving state for all settings
   const [savingSettings, setSavingSettings] = useState(false);
+  // Add: control visibility of Settings section
+  const [showSettings, setShowSettings] = useState(false);
 
   // Add local states for preferences
   const [phone, setPhone] = useState<string>((user as any)?.phone ?? "");
@@ -126,12 +128,21 @@ export default function Profile() {
                       {user?.email ?? "No email"}
                     </p>
                     <div className="mt-5 flex flex-col sm:flex-row gap-2">
-                      <a href="#settings">
-                        <Button variant="outline" className="gap-2">
-                          <Pencil className="h-4 w-4" />
-                          Edit Profile
-                        </Button>
-                      </a>
+                      <Button
+                        variant="outline"
+                        className="gap-2"
+                        onClick={() => {
+                          setShowSettings(true);
+                          // Smoothly scroll to settings after it's rendered
+                          requestAnimationFrame(() => {
+                            const el = document.getElementById("settings");
+                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                          });
+                        }}
+                      >
+                        <Pencil className="h-4 w-4" />
+                        Edit Profile
+                      </Button>
                       <Button variant="ghost" onClick={signOut}>
                         Sign Out
                       </Button>
@@ -419,7 +430,7 @@ export default function Profile() {
               )}
 
               {/* New: Settings / Preferences (Edit display name) */}
-              {isAuthenticated && (
+              {isAuthenticated && showSettings && (
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
