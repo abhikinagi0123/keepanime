@@ -25,7 +25,6 @@ export default function Navbar() {
   const location = useLocation();
   const { items, total, count, removeItem, clearCart, setQuantity } = useCart();
   const { items: wishlistItems, count: wishlistCount, toggle: toggleWishlist } = useWishlist();
-  const { signOut } = useAuth() as any; // reuse hook to access signOut
 
   return (
     <motion.nav
@@ -249,9 +248,6 @@ export default function Navbar() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <Button variant="outline" size="sm" onClick={signOut}>
-                  Sign Out
-                </Button>
               </>
             ) : (
               <div className="flex items-center gap-2">
@@ -296,9 +292,6 @@ export default function Navbar() {
                             Profile
                           </Button>
                         </Link>
-                        <Button className="w-full" variant="destructive" onClick={signOut}>
-                          Sign Out
-                        </Button>
                       </div>
                     ) : (
                       <div className="space-y-2">
