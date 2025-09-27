@@ -44,3 +44,27 @@ export const setName = mutation({
     await ctx.db.patch(userId, { name });
   },
 });
+
+export const updatePreferences = mutation({
+  args: {
+    phone: v.optional(v.string()),
+    address: v.optional(v.string()),
+    paymentMethod: v.optional(v.string()),
+    notifications: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) {
+      throw new Error("Not authenticated");
+    }
+
+    const update: Record<string, unknown> = {};
+    if (args.phone !== undefined) update.phone = args.phone;
+    if (args.address !== undefined) update.address = args.address;
+    if (args.paymentMethod !== undefined) update.paymentMethod = args.paymentMethod;
+    if (args.notifications !== undefined) update.notifications = args.notifications;
+
+    if (Object.keys(update).length === 0) return;
+    await ctx.db.patch(userId, update);
+  },
+});

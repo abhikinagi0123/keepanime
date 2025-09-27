@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { useCart } from "@/hooks/use-cart";
 import { useMutation } from "convex/react";
@@ -21,10 +22,18 @@ export default function Profile() {
   const { items: wishlistItems, count: wishlistCount, toggle: toggleWishlist } = useWishlist();
   const { items: cartItems, addItem, removeItem } = useCart();
   const setUserName = useMutation(api.users.setName);
+  const updatePreferences = useMutation(api.users.updatePreferences);
 
   // Local state for editing display name
   const [newName, setNewName] = useState<string>(user?.name ?? "");
   const [savingName, setSavingName] = useState(false);
+
+  // Add local states for preferences
+  const [phone, setPhone] = useState<string>((user as any)?.phone ?? "");
+  const [address, setAddress] = useState<string>((user as any)?.address ?? "");
+  const [paymentMethod, setPaymentMethod] = useState<string>((user as any)?.paymentMethod ?? "");
+  const [notifications, setNotifications] = useState<boolean>((user as any)?.notifications ?? false);
+  const [savingPrefs, setSavingPrefs] = useState(false);
 
   const inCart = (id: string) => cartItems.some((i) => i.id === id);
   const uniqueCollections = Array.from(
@@ -42,6 +51,23 @@ export default function Profile() {
       // swallow error to keep UX simple; errors bubble up in logs
     } finally {
       setSavingName(false);
+    }
+  };
+
+  // Add handler to save preferences
+  const handleSavePreferences = async () => {
+    setSavingPrefs(true);
+    try {
+      await updatePreferences({
+        phone: phone || undefined,
+        address: address || undefined,
+        paymentMethod: paymentMethod || undefined,
+        notifications,
+      });
+    } catch {
+      // silent fail to keep UI minimal; errors visible in logs
+    } finally {
+      setSavingPrefs(false);
     }
   };
 
@@ -420,7 +446,58 @@ export default function Profile() {
                         <div className="text-xs text-muted-foreground mb-1">Email</div>
                         <Input value={user?.email ?? ""} readOnly />
                       </div>
+
+                      {/* Added: Phone */}
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Phone</div>
+                        <Input
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          placeholder="Enter phone number"
+                          disabled={savingPrefs}
+                        />
+                      </div>
+
+                      {/* Added: Address */}
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Address</div>
+                        <Input
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          placeholder="Enter address"
+                          disabled={savingPrefs}
+                        />
+                      </div>
+
+                      {/* Added: Payment Method */}
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Payment Method</div>
+                        <Input
+                          value={paymentMethod}
+                          onChange={(e) => setPaymentMethod(e.target.value)}
+                          placeholder="Card ending •••• 4242"
+                          disabled={savingPrefs}
+                        />
+                      </div>
+
+                      {/* Added: Notifications */}
+                      <div className="flex items-center justify-between sm:items-end sm:justify-start gap-3">
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Notifications</div>
+                          <div className="text-xs text-muted-foreground">
+                            Receive updates and launch alerts
+                          </div>
+                        </div>
+                        <Switch checked={notifications} onCheckedChange={setNotifications} />
+                      </div>
                     </div>
+
+                    <div className="flex justify-end">
+                      <Button onClick={handleSavePreferences} disabled={savingPrefs}>
+                        {savingPrefs ? "Saving..." : "Save Preferences"}
+                      </Button>
+                    </div>
+
                     <p className="text-xs text-muted-foreground">
                       More preferences like phone, address, payment methods, and notifications will appear here in the future.
                     </p>

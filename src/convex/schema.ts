@@ -30,6 +30,12 @@ const schema = defineSchema(
       isAnonymous: v.optional(v.boolean()), // is the user anonymous. do not remove
 
       role: v.optional(roleValidator), // role of the user. do not remove
+
+      // Added optional profile fields
+      phone: v.optional(v.string()),
+      address: v.optional(v.string()),
+      paymentMethod: v.optional(v.string()),
+      notifications: v.optional(v.boolean()),
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
     // Products table for anime pendrives
