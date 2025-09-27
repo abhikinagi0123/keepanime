@@ -11,11 +11,13 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Link, useParams } from "react-router";
 import ProductCard from "@/components/ProductCard";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useCart } from "@/hooks/use-cart";
+import { useWishlist } from "@/hooks/use-wishlist";
 
 export default function Product() {
   const { id } = useParams();
@@ -40,6 +42,7 @@ export default function Product() {
   const [submitting, setSubmitting] = useState(false); // Add submitting state
   const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
   const { addItem } = useCart();
+  const { toggle: toggleWishlist, has } = useWishlist();
 
   const handleNotify = async () => {
     if (!email) {
@@ -158,6 +161,27 @@ export default function Product() {
                 </div>
 
                 <div className="flex gap-3">
+                  {product && (
+                    <Button
+                      variant={has(product._id as unknown as string) ? "default" : "outline"}
+                      size="icon"
+                      aria-label="Toggle wishlist"
+                      onClick={() =>
+                        toggleWishlist({
+                          id: product._id as unknown as string,
+                          name: product.name,
+                          price: product.price,
+                          image: product.images?.[0],
+                          storage: product.storage,
+                          collection: product.collection,
+                        })
+                      }
+                    >
+                      <Heart
+                        className={`h-4 w-4 ${has(product._id as unknown as string) ? "fill-current" : ""}`}
+                      />
+                    </Button>
+                  )}
                   <Button
                     className="flex-1"
                     onClick={() => product.isPreOrder ? setOpen(true) : handleAddToCart()}
