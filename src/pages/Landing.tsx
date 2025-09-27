@@ -17,6 +17,7 @@ import { toast } from "sonner";
 export default function Landing() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
   
   const products = useQuery(api.products.list, { sortBy: "name", sortOrder: "asc" });
   const collections = useQuery(api.products.getCollections);
@@ -35,6 +36,7 @@ export default function Landing() {
       await subscribe({ email, source: "homepage" });
       toast.success("You'll be notified when we launch!");
       setEmail("");
+      setSubscribed(true);
     } catch (error) {
       toast.error("Failed to subscribe. Please try again.");
     } finally {
@@ -70,19 +72,26 @@ export default function Landing() {
                 </p>
               </div>
 
-              <form onSubmit={handleNotifyMe} className="flex space-x-2 max-w-md">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1"
-                />
-                <Button type="submit" disabled={isLoading}>
-                  Notify Me
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </form>
+              {subscribed ? (
+                <div className="text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200/60 dark:border-green-800/60 rounded-md px-3 py-2 w-fit">
+                  You'll be notified when we launch!
+                </div>
+              ) : (
+                <form onSubmit={handleNotifyMe} className="flex space-x-2 max-w-md">
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1"
+                    disabled={isLoading}
+                  />
+                  <Button type="submit" disabled={isLoading}>
+                    Notify Me
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </form>
+              )}
 
               <div className="flex items-center space-x-6 text-sm text-muted-foreground">
                 <div className="flex items-center space-x-2">
