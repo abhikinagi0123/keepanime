@@ -13,6 +13,8 @@ import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { useCart } from "@/hooks/use-cart";
 import { useWishlist } from "@/hooks/use-wishlist";
+import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "react-router";
 
 interface Product {
   _id: string;
@@ -38,6 +40,8 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
   const { addItem } = useCart();
   const { toggle: toggleWishlist, has } = useWishlist();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const wished = has(product._id);
 
   const handleAddToCart = () => {
@@ -153,7 +157,11 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             </Button>
           </Link>
           {product.isPreOrder ? (
-            <Button size="sm" className="flex-1" onClick={() => setOpen(true)}>
+            <Button
+              size="sm"
+              className="flex-1"
+              onClick={() => (isAuthenticated ? setOpen(true) : navigate("/auth"))}
+            >
               Notify Me
             </Button>
           ) : (

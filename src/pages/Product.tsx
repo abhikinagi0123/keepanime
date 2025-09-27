@@ -18,6 +18,8 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useCart } from "@/hooks/use-cart";
 import { useWishlist } from "@/hooks/use-wishlist";
+import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "react-router";
 
 export default function Product() {
   const { id } = useParams();
@@ -43,8 +45,14 @@ export default function Product() {
   const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
   const { addItem } = useCart();
   const { toggle: toggleWishlist, has } = useWishlist();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const handleNotify = async () => {
+    if (!isAuthenticated) {
+      navigate("/auth");
+      return;
+    }
     if (!email) {
       toast.error("Please enter your email.");
       return;
@@ -184,7 +192,13 @@ export default function Product() {
                   )}
                   <Button
                     className="flex-1"
-                    onClick={() => product.isPreOrder ? setOpen(true) : handleAddToCart()}
+                    onClick={() =>
+                      product.isPreOrder
+                        ? isAuthenticated
+                          ? setOpen(true)
+                          : navigate("/auth")
+                        : handleAddToCart()
+                    }
                   >
                     {product.isPreOrder ? "Notify Me at Launch" : "Add to Cart"}
                   </Button>
