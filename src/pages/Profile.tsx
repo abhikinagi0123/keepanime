@@ -7,7 +7,6 @@ import { useAuth } from "@/hooks/use-auth";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { useCart } from "@/hooks/use-cart";
 import { useMutation } from "convex/react";
@@ -62,7 +61,6 @@ export default function Profile() {
         phone: phone || undefined,
         address: address || undefined,
         paymentMethod: paymentMethod || undefined,
-        notifications,
       });
     } catch {
       // silent fail to keep UI minimal; errors visible in logs
@@ -479,17 +477,6 @@ export default function Profile() {
                           disabled={savingPrefs}
                         />
                       </div>
-
-                      {/* Added: Notifications */}
-                      <div className="flex items-center justify-between sm:items-end sm:justify-start gap-3">
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Notifications</div>
-                          <div className="text-xs text-muted-foreground">
-                            Receive updates and launch alerts
-                          </div>
-                        </div>
-                        <Switch checked={notifications} onCheckedChange={setNotifications} />
-                      </div>
                     </div>
 
                     <div className="flex justify-end">
@@ -499,7 +486,7 @@ export default function Profile() {
                     </div>
 
                     <p className="text-xs text-muted-foreground">
-                      More preferences like phone, address, payment methods, and notifications will appear here in the future.
+                      More preferences like phone, address, and payment methods will appear here in the future.
                     </p>
                   </CardContent>
                 </Card>
