@@ -45,6 +45,17 @@ export const setName = mutation({
   },
 });
 
+export const setImage = mutation({
+  args: { image: v.string() },
+  handler: async (ctx, { image }) => {
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) {
+      throw new Error("Not authenticated");
+    }
+    await ctx.db.patch(userId, { image });
+  },
+});
+
 export const updatePreferences = mutation({
   args: {
     phone: v.optional(v.string()),

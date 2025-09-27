@@ -25,6 +25,7 @@ export default function Profile() {
   const { items: cartItems, addItem, removeItem } = useCart();
   const setUserName = useMutation(api.users.setName);
   const updatePreferences = useMutation(api.users.updatePreferences);
+  const setUserImage = useMutation(api.users.setImage);
 
   // Local state for editing display name
   const [newName, setNewName] = useState<string>(user?.name ?? "");
@@ -38,6 +39,9 @@ export default function Profile() {
   const [paymentMethod, setPaymentMethod] = useState<string>((user as any)?.paymentMethod ?? "");
   // Add: notifications preference state
   const [notifications, setNotifications] = useState<boolean>(Boolean((user as any)?.notifications ?? false));
+
+  // Add local state for DP (image URL)
+  const [dpUrl, setDpUrl] = useState<string>((user as any)?.image ?? "");
 
   const inCart = (id: string) => cartItems.some((i) => i.id === id);
   const uniqueCollections = Array.from(
@@ -106,9 +110,45 @@ export default function Profile() {
                 className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-white via-primary/5 to-muted/20 ring-1 ring-primary/10 shadow-sm mb-4"
               >
                 <div className="px-6 sm:px-10 py-6">
-                  {/* Adjust grid to remove DP column and keep details + summary */}
                   <div className="grid grid-cols-1 md:grid-cols-[1fr,280px] items-start gap-6 lg:gap-8 text-left">
                     <div className="flex-1 md:col-start-1">
+                      {/* DP uploader section - added above details */}
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="h-16 w-16 rounded-full overflow-hidden ring-1 ring-primary/20 bg-muted/50 flex items-center justify-center">
+                          {dpUrl ? (
+                            <img
+                              src={dpUrl}
+                              alt="Profile"
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <span className="text-sm text-muted-foreground">{initials}</span>
+                          )}
+                        </div>
+                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-[1fr,auto] gap-2">
+                          <Input
+                            value={dpUrl}
+                            onChange={(e) => setDpUrl(e.target.value)}
+                            placeholder="Paste image URL (e.g., https://...)"
+                          />
+                          <Button
+                            onClick={async () => {
+                              const url = dpUrl.trim();
+                              if (!url) return;
+                              try {
+                                await setUserImage({ image: url });
+                              } catch {
+                                // silent error; logs handle it
+                              }
+                            }}
+                          >
+                            Save
+                          </Button>
+                        </div>
+                      </div>
+                      {/* end DP uploader */}
+
                       <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
                         {user?.name ?? "Unnamed User"}
                       </h2>
