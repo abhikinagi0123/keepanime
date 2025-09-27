@@ -1,5 +1,4 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Pencil } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -67,8 +66,6 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen">
-      <Navbar />
-
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -100,32 +97,41 @@ export default function Profile() {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-primary/10 via-muted/40 to-background mb-6"
+              className="relative overflow-hidden rounded-2xl border bg-gradient-to-b from-background via-muted/30 to-background mb-6"
             >
-              <div className="p-6 sm:p-8">
-                <div className="flex items-center gap-4 sm:gap-6">
-                  <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-primary/10 ring-2 ring-primary/20 flex items-center justify-center text-lg font-semibold">
-                    {initials}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h2 className="text-2xl font-bold truncate">
-                        {user?.name ?? "Unnamed User"}
-                      </h2>
-                      <Badge variant="secondary" className="text-xs">
-                        {user?.role ?? "user"}
-                      </Badge>
+              <div className="px-6 sm:px-10 py-8">
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative">
+                    <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-primary/10 ring-2 ring-primary/30 shadow-[0_0_20px_rgba(0,0,0,0.15)] flex items-center justify-center text-2xl font-semibold">
+                      {initials}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1 truncate">
-                      {user?.email ?? "No email"}
-                    </p>
+                    <div className="absolute -inset-1 rounded-full blur-xl bg-primary/10 pointer-events-none" />
                   </div>
-                </div>
-
-                <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row gap-2">
-                  <Button variant="outline" onClick={signOut} className="w-full sm:w-auto">
-                    Sign Out
-                  </Button>
+                  <h2 className="mt-4 text-2xl sm:text-3xl font-bold tracking-tight">
+                    {user?.name ?? "Unnamed User"}
+                  </h2>
+                  <div className="mt-2 flex items-center gap-2 flex-wrap justify-center">
+                    <Badge variant="secondary" className="text-xs">
+                      Anime Collector
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {user?.role ?? "user"}
+                    </Badge>
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {user?.email ?? "No email"}
+                  </p>
+                  <div className="mt-5 flex flex-col sm:flex-row gap-2">
+                    <a href="#settings">
+                      <Button variant="outline" className="gap-2">
+                        <Pencil className="h-4 w-4" />
+                        Edit Profile
+                      </Button>
+                    </a>
+                    <Button variant="ghost" onClick={signOut}>
+                      Sign Out
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -416,7 +422,7 @@ export default function Profile() {
                 transition={{ delay: 0.25 }}
                 className="mt-6"
               >
-                <Card className="border-0 shadow-sm">
+                <Card className="border-0 shadow-sm" id="settings">
                   <CardHeader>
                     <CardTitle>Settings</CardTitle>
                   </CardHeader>
@@ -502,8 +508,6 @@ export default function Profile() {
           </>
         )}
       </div>
-
-      <Footer />
     </div>
   );
 }
