@@ -15,6 +15,7 @@ import { Link, useParams } from "react-router";
 import ProductCard from "@/components/ProductCard";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useCart } from "@/hooks/use-cart";
 
 export default function Product() {
   const { id } = useParams();
@@ -38,6 +39,7 @@ export default function Product() {
   const [email, setEmail] = useState(""); // Add email input state
   const [submitting, setSubmitting] = useState(false); // Add submitting state
   const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
+  const { addItem } = useCart();
 
   const handleNotify = async () => {
     if (!email) {
@@ -56,6 +58,18 @@ export default function Product() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    addItem({
+      id: product._id as unknown as string,
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0],
+      storage: product.storage,
+      collection: product.collection,
+    }, 1);
   };
 
   return (
@@ -144,7 +158,10 @@ export default function Product() {
                 </div>
 
                 <div className="flex gap-3">
-                  <Button className="flex-1" onClick={() => product.isPreOrder ? setOpen(true) : null}>
+                  <Button
+                    className="flex-1"
+                    onClick={() => product.isPreOrder ? setOpen(true) : handleAddToCart()}
+                  >
                     {product.isPreOrder ? "Notify Me at Launch" : "Add to Cart"}
                   </Button>
                   <Link to={`/shop?collection=${encodeURIComponent(product.collection)}`}>

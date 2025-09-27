@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
+import { useCart } from "@/hooks/use-cart";
+import { useWishlist } from "@/hooks/use-wishlist";
 
 interface Product {
   _id: string;
@@ -33,6 +35,20 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [email, setEmail] = useState(""); // Add email input state
   const [submitting, setSubmitting] = useState(false); // Add submitting state
   const subscribe = useMutation(api.newsletter.subscribe); // Add mutation
+  const { addItem } = useCart();
+  const { toggle: toggleWishlist, has } = useWishlist();
+  const wished = has(product._id);
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product._id,
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0],
+      storage: product.storage,
+      collection: product.collection,
+    }, 1);
+  };
 
   const handleNotify = async () => {
     if (!email) {
@@ -70,9 +86,24 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             />
           </Link>
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <Button variant="secondary" size="icon" className="h-8 w-8" aria-label="Add to wishlist">
-              <Heart className="h-4 w-4" />
+          <div className="absolute top-2 right-2 opacity-100 transition-opacity duration-300">
+            <Button
+              variant={wished ? "default" : "secondary"}
+              size="icon"
+              className="h-8 w-8"
+              aria-label="Toggle wishlist"
+              onClick={() =>
+                toggleWishlist({
+                  id: product._id,
+                  name: product.name,
+                  price: product.price,
+                  image: product.images?.[0],
+                  storage: product.storage,
+                  collection: product.collection,
+                })
+              }
+            >
+              <Heart className={`h-4 w-4 ${wished ? "fill-current" : ""}`} />
             </Button>
           </div>
           {product.isPreOrder && (
@@ -113,7 +144,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
               Notify Me
             </Button>
           ) : (
-            <Button size="sm" className="flex-1">
+            <Button size="sm" className="flex-1" onClick={handleAddToCart}>
               Add to Cart
             </Button>
           )}

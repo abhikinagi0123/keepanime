@@ -16,6 +16,8 @@ import NotFound from "./pages/NotFound.tsx";
 import Product from "./pages/Product.tsx";
 import Blog from "@/pages/Blog.tsx";
 import Contact from "@/pages/Contact.tsx";
+import { CartProvider } from "@/hooks/use-cart";
+import { WishlistProvider } from "@/hooks/use-wishlist";
 import "./types/global.d.ts";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
@@ -51,21 +53,25 @@ createRoot(document.getElementById("root")!).render(
     <VlyToolbar />
     <InstrumentationProvider>
       <ConvexAuthProvider client={convex}>
-        <BrowserRouter>
-          <RouteSyncer />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<AuthPage redirectAfterAuth="/" />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/collections" element={<Collections />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/product/:id" element={<Product />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
+        <WishlistProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <RouteSyncer />
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route path="/auth" element={<AuthPage redirectAfterAuth="/" />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/collections" element={<Collections />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/product/:id" element={<Product />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+            <Toaster />
+          </CartProvider>
+        </WishlistProvider>
       </ConvexAuthProvider>
     </InstrumentationProvider>
   </StrictMode>,
