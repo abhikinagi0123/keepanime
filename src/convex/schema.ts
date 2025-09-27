@@ -32,12 +32,51 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    // Products table for anime pendrives
+    products: defineTable({
+      name: v.string(),
+      description: v.string(),
+      price: v.number(),
+      storage: v.string(),
+      collection: v.string(), // e.g., "One Piece", "Naruto", "Attack on Titan"
+      images: v.array(v.string()),
+      specifications: v.object({
+        storageSize: v.string(),
+        preloadedAnime: v.array(v.string()),
+        logoDesign: v.string(),
+        compatibility: v.string(),
+      }),
+      isPreOrder: v.boolean(),
+    }).index("by_collection", ["collection"]),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    // Newsletter subscribers
+    newsletter: defineTable({
+      email: v.string(),
+      source: v.string(), // "homepage", "product", "launch"
+      subscribedAt: v.number(),
+    }).index("by_email", ["email"]),
+
+    // Blog posts for updates
+    blog: defineTable({
+      title: v.string(),
+      slug: v.string(),
+      content: v.string(),
+      excerpt: v.string(),
+      image: v.optional(v.string()),
+      published: v.boolean(),
+      authorId: v.id("users"),
+    })
+      .index("by_slug", ["slug"])
+      .index("by_published", ["published"]),
+
+    // Contact form submissions
+    contacts: defineTable({
+      name: v.string(),
+      email: v.string(),
+      subject: v.string(),
+      message: v.string(),
+      status: v.union(v.literal("new"), v.literal("read"), v.literal("replied")),
+    }).index("by_status", ["status"]),
   },
   {
     schemaValidation: false,

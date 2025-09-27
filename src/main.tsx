@@ -9,7 +9,11 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
 import Landing from "./pages/Landing.tsx";
+import Shop from "./pages/Shop.tsx";
+import Collections from "./pages/Collections.tsx";
+import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Product from "./pages/Product.tsx";
 import "./types/global.d.ts";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
@@ -49,7 +53,11 @@ createRoot(document.getElementById("root")!).render(
           <RouteSyncer />
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<AuthPage redirectAfterAuth="/" />} /> {/* TODO: change redirect after auth to correct page */}
+            <Route path="/auth" element={<AuthPage redirectAfterAuth="/" />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/collections" element={<Collections />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/product/:id" element={<Product />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
