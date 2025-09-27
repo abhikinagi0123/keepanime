@@ -25,14 +25,13 @@ export default function Profile() {
 
   // Local state for editing display name
   const [newName, setNewName] = useState<string>(user?.name ?? "");
-  const [savingName, setSavingName] = useState(false);
+  // Unified saving state for all settings
+  const [savingSettings, setSavingSettings] = useState(false);
 
   // Add local states for preferences
   const [phone, setPhone] = useState<string>((user as any)?.phone ?? "");
   const [address, setAddress] = useState<string>((user as any)?.address ?? "");
   const [paymentMethod, setPaymentMethod] = useState<string>((user as any)?.paymentMethod ?? "");
-  const [notifications, setNotifications] = useState<boolean>((user as any)?.notifications ?? false);
-  const [savingPrefs, setSavingPrefs] = useState(false);
 
   const inCart = (id: string) => cartItems.some((i) => i.id === id);
   const uniqueCollections = Array.from(
@@ -40,32 +39,24 @@ export default function Profile() {
   ) as string[];
   const rewardsPoints = wishlistCount * 50;
 
-  const handleSaveName = async () => {
-    if (!newName.trim() || newName.trim() === user?.name) return;
-    setSavingName(true);
+  // Unified save handler: saves name and preferences together
+  const handleSaveSettings = async () => {
+    const trimmedName = newName.trim();
+    const shouldUpdateName = trimmedName && trimmedName !== (user?.name ?? "");
+    setSavingSettings(true);
     try {
-      await setUserName({ name: newName.trim() });
-      // no toast needed here to keep UI clean; the UI updates via realtime query
-    } catch {
-      // swallow error to keep UX simple; errors bubble up in logs
-    } finally {
-      setSavingName(false);
-    }
-  };
-
-  // Add handler to save preferences
-  const handleSavePreferences = async () => {
-    setSavingPrefs(true);
-    try {
+      if (shouldUpdateName) {
+        await setUserName({ name: trimmedName });
+      }
       await updatePreferences({
         phone: phone || undefined,
         address: address || undefined,
         paymentMethod: paymentMethod || undefined,
       });
     } catch {
-      // silent fail to keep UI minimal; errors visible in logs
+      // keep UI minimal; errors visible in logs
     } finally {
-      setSavingPrefs(false);
+      setSavingSettings(false);
     }
   };
 
@@ -428,17 +419,12 @@ export default function Profile() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">Display Name</div>
-                        <div className="flex gap-2">
-                          <Input
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                            placeholder="Your name"
-                            disabled={savingName}
-                          />
-                          <Button onClick={handleSaveName} disabled={savingName || !newName.trim() || newName.trim() === user?.name}>
-                            {savingName ? "Saving..." : "Save"}
-                          </Button>
-                        </div>
+                        <Input
+                          value={newName}
+                          onChange={(e) => setNewName(e.target.value)}
+                          placeholder="Your name"
+                          disabled={savingSettings}
+                        />
                       </div>
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">Email</div>
@@ -452,7 +438,7 @@ export default function Profile() {
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="Enter phone number"
-                          disabled={savingPrefs}
+                          disabled={savingSettings}
                         />
                       </div>
 
@@ -463,7 +449,7 @@ export default function Profile() {
                           value={address}
                           onChange={(e) => setAddress(e.target.value)}
                           placeholder="Enter address"
-                          disabled={savingPrefs}
+                          disabled={savingSettings}
                         />
                       </div>
 
@@ -474,14 +460,18 @@ export default function Profile() {
                           value={paymentMethod}
                           onChange={(e) => setPaymentMethod(e.target.value)}
                           placeholder="Card ending •••• 4242"
-                          disabled={savingPrefs}
+                          disabled={savingSettings}
                         />
                       </div>
                     </div>
 
                     <div className="flex justify-end">
-                      <Button onClick={handleSavePreferences} disabled={savingPrefs}>
-                        {savingPrefs ? "Saving..." : "Save Preferences"}
+                      <Button
+                        onClick={handleSaveSettings}
+                        disabled={savingSettings}
+                        className="px-6"
+                      >
+                        {savingSettings ? "Saving..." : "Save Changes"}
                       </Button>
                     </div>
 
