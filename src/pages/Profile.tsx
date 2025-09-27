@@ -165,7 +165,7 @@ export default function Profile() {
                     </div>
 
                     {/* Right-side Quick Summary (desktop and tablet) */}
-                    <div className="hidden md:block justify-self-end self-start">
+                    <div className="hidden md:block md:col-start-3 md:row-start-1 justify-self-end self-start">
                       <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all w-[260px]">
                         <CardHeader className="pb-2">
                           <CardTitle className="text-base">Quick Summary</CardTitle>
