@@ -105,7 +105,7 @@ export default function Profile() {
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative overflow-hidden rounded-2xl border bg-gradient-to-b from-background via-muted/30 to-background mb-6"
+                className="relative overflow-hidden rounded-2xl border bg-gradient-to-b from-[#0f0c29] via-[#302b63]/70 to-[#24243e] mb-6"
               >
                 <div className="px-6 sm:px-10 py-8">
                   <div className="flex flex-col items-center text-center">
@@ -248,7 +248,7 @@ export default function Profile() {
                   transition={{ delay: 0.1 }}
                   className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6"
                 >
-                  <Card className="border-0 shadow-sm">
+                  <Card className="border-0 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm text-muted-foreground">Total Orders</CardTitle>
                     </CardHeader>
@@ -257,7 +257,7 @@ export default function Profile() {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-0 shadow-sm">
+                  <Card className="border-0 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm text-muted-foreground">Wishlist</CardTitle>
                     </CardHeader>
@@ -266,7 +266,7 @@ export default function Profile() {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-0 shadow-sm">
+                  <Card className="border-0 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm text-muted-foreground">Rewards</CardTitle>
                     </CardHeader>
@@ -276,7 +276,7 @@ export default function Profile() {
                     </CardContent>
                   </Card>
 
-                  <Card className="border-0 shadow-sm">
+                  <Card className="border-0 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm text-muted-foreground">Collections</CardTitle>
                     </CardHeader>
@@ -306,7 +306,7 @@ export default function Profile() {
                         wishlistItems.slice(0, 5).map((i) => {
                           const added = inCart(i.id);
                           return (
-                            <div key={i.id} className="flex items-center gap-3">
+                            <div key={i.id} className="flex items-center gap-3 rounded-md hover:bg-muted/30 transition-colors">
                               <img
                                 src={i.image || "/placeholder-product.jpg"}
                                 alt={i.name}
@@ -377,7 +377,7 @@ export default function Profile() {
                         {wishlistItems.map((i) => {
                           const added = inCart(i.id);
                           return (
-                            <div key={i.id} className="min-w-[220px] max-w-[220px] rounded-lg border bg-card p-3">
+                            <div key={i.id} className="min-w-[220px] max-w-[220px] rounded-lg border bg-card p-3 transition-all hover:shadow-md hover:ring-2 hover:ring-primary/30">
                               <img
                                 src={i.image || "/placeholder-product.jpg"}
                                 alt={i.name}
