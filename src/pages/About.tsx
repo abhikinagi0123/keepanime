@@ -20,8 +20,7 @@ export default function About() {
         >
           <h1 className="text-4xl font-bold mb-6">About KeepAnime</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We're passionate about bringing anime culture into the digital age with premium, 
-            collectible storage solutions that anime fans can actually use.
+            We craft premium, collectible storage that blends authentic anime design with everyday utility.
           </p>
         </motion.div>
 
@@ -37,18 +36,15 @@ export default function About() {
             <div className="space-y-4 text-muted-foreground">
               <p>
                 KeepAnime was born from a simple idea: what if anime collectibles could be both 
-                beautiful and practical? As lifelong anime fans, we noticed that most merchandise 
-                sits on shelves looking pretty but serving no real purpose.
+                beautiful and practical? As lifelong fans, we saw that most merch looks great on a shelf—
+                but doesn't do much more.
               </p>
               <p>
-                That's when we decided to create something different. Our anime-themed pendrives 
-                combine stunning designs inspired by your favorite series with high-quality storage 
-                technology, preloaded with exclusive content.
+                So we created something different. Our pendrives pair official-feel designs inspired by
+                beloved series with high-quality, fast storage—preloaded with curated extras.
               </p>
               <p>
-                Every drive is carefully crafted with authentic artwork, premium materials, and 
-                curated anime content that brings your favorite characters and stories with you 
-                wherever you go.
+                Each drive is thoughtfully crafted to be a collectible you'll use daily—and a piece you'll love to display.
               </p>
             </div>
           </div>

@@ -65,6 +65,7 @@ export default function Product() {
                   <img
                     src={product.images?.[0] || "/placeholder-product.jpg"}
                     alt={product.name}
+                    loading="lazy"
                     className="w-full h-96 object-cover"
                   />
                   {product.isPreOrder && (
@@ -78,7 +79,7 @@ export default function Product() {
                   <Badge variant="secondary" className="text-xs">{product.collection}</Badge>
                   <h1 className="text-3xl font-bold tracking-tight">{product.name}</h1>
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl font-bold">${product.price}</span>
+                    <span className="text-2xl font-bold">${product.price.toFixed(2)}</span>
                     <span className="text-sm text-muted-foreground">{product.storage}</span>
                   </div>
                 </div>
