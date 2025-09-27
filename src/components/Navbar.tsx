@@ -9,6 +9,7 @@ import { Link, useLocation } from "react-router";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { X, Trash2 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -234,11 +235,20 @@ export default function Navbar() {
 
             {isAuthenticated ? (
               <>
-                <Link to="/profile">
-                  <Button variant="ghost" size="icon">
-                    <User className="h-5 w-5" />
-                  </Button>
-                </Link>
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/profile">
+                        <Button variant="ghost" size="icon" aria-label="Profile">
+                          <User className="h-5 w-5" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" align="end">
+                      Profile
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 <Button variant="outline" size="sm" onClick={signOut}>
                   Sign Out
                 </Button>
@@ -246,7 +256,7 @@ export default function Navbar() {
             ) : (
               <Link to="/auth">
                 <Button variant="outline" size="sm">
-                  Sign Up
+                  Sign In
                 </Button>
               </Link>
             )}
@@ -285,7 +295,7 @@ export default function Navbar() {
                       </div>
                     ) : (
                       <Link to="/auth">
-                        <Button className="w-full">Sign Up</Button>
+                        <Button className="w-full">Sign In</Button>
                       </Link>
                     )}
                   </div>
