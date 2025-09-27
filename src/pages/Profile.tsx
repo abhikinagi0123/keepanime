@@ -106,8 +106,8 @@ export default function Profile() {
                 className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-white via-primary/5 to-muted/20 ring-1 ring-primary/10 shadow-sm mb-6"
               >
                 <div className="px-6 sm:px-10 py-8">
-                  {/* Adjust grid to add a right-side column on large screens */}
-                  <div className="grid grid-cols-1 md:grid-cols-[auto,1fr] lg:grid-cols-[auto,1fr,auto] items-start gap-8 lg:gap-10 text-left">
+                  {/* Adjust grid to add a right-side column on medium screens */}
+                  <div className="grid grid-cols-1 md:grid-cols-[auto,1fr,auto] items-start gap-8 lg:gap-10 text-left">
                     <div className="relative shrink-0 mx-auto md:mx-0">
                       <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-primary/10 ring-2 ring-primary/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center text-2xl font-semibold">
                         {initials}
@@ -164,8 +164,8 @@ export default function Profile() {
                       </div>
                     </div>
 
-                    {/* Right-side Quick Summary (desktop only) */}
-                    <div className="hidden lg:block">
+                    {/* Right-side Quick Summary (desktop and tablet) */}
+                    <div className="hidden md:block justify-self-end">
                       <Card className="border-0 shadow-sm w-[260px]">
                         <CardHeader className="pb-2">
                           <CardTitle className="text-base">Quick Summary</CardTitle>
