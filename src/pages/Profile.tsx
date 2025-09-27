@@ -30,8 +30,6 @@ export default function Profile() {
   const [newName, setNewName] = useState<string>(user?.name ?? "");
   // Unified saving state for all settings
   const [savingSettings, setSavingSettings] = useState(false);
-  // Add: control visibility of Settings section
-  const [showSettings, setShowSettings] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Add local states for preferences
@@ -74,7 +72,7 @@ export default function Profile() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="flex-1">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -134,7 +132,6 @@ export default function Profile() {
                         variant="outline"
                         className="gap-2"
                         onClick={() => {
-                          setShowSettings(true);
                           setSettingsOpen(true); // open the dropdown when editing
                           // Smoothly scroll to settings after it's rendered
                           requestAnimationFrame(() => {
@@ -432,8 +429,8 @@ export default function Profile() {
                 </motion.div>
               )}
 
-              {/* New: Settings / Preferences (Edit display name) */}
-              {isAuthenticated && showSettings && (
+              {/* Settings / Preferences: Always visible as a dropdown */}
+              {isAuthenticated && (
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -448,7 +445,7 @@ export default function Profile() {
                     onValueChange={(v) => setSettingsOpen(v === "settings")}
                     className="w-full"
                   >
-                    <AccordionItem value="settings" className="border rounded-md">
+                    <AccordionItem value="settings" className="border rounded-lg shadow-sm bg-card">
                       <AccordionTrigger className="px-4 py-3 hover:no-underline">
                         <div className="flex flex-col items-start text-left w-full">
                           <div className="font-semibold">Settings</div>
@@ -459,15 +456,14 @@ export default function Profile() {
                               `Phone: ${phone || "—"}`,
                               `Address: ${address || "—"}`,
                               `Payment: ${paymentMethod || "—"}`,
-                              `Notifications: ${notifications ? "On" : "Off"}`
                             ].join(" • ")}
                           </div>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="px-0 pb-0">
                         <Card className="border-0 shadow-sm rounded-none border-t">
-                          <CardContent className="space-y-4 pt-6">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <CardContent className="space-y-5 pt-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
                                 <div className="text-xs text-muted-foreground mb-1">Display Name</div>
                                 <Input
@@ -477,6 +473,7 @@ export default function Profile() {
                                   disabled={savingSettings}
                                 />
                               </div>
+
                               <div>
                                 <div className="text-xs text-muted-foreground mb-1">Email</div>
                                 <Input value={user?.email ?? ""} readOnly />
@@ -502,28 +499,13 @@ export default function Profile() {
                                 />
                               </div>
 
-                              <div>
+                              <div className="md:col-span-2">
                                 <div className="text-xs text-muted-foreground mb-1">Payment Method</div>
                                 <Input
                                   value={paymentMethod}
                                   onChange={(e) => setPaymentMethod(e.target.value)}
                                   placeholder="Card ending •••• 4242"
                                   disabled={savingSettings}
-                                />
-                              </div>
-
-                              <div className="flex items-center justify-between border rounded-md px-3 py-2">
-                                <div>
-                                  <div className="text-xs text-muted-foreground mb-0.5">Notifications</div>
-                                  <div className="text-xs text-muted-foreground">
-                                    Receive product updates and launch alerts
-                                  </div>
-                                </div>
-                                <Switch
-                                  checked={notifications}
-                                  onCheckedChange={setNotifications}
-                                  disabled={savingSettings}
-                                  aria-label="Toggle notifications"
                                 />
                               </div>
                             </div>
@@ -539,7 +521,6 @@ export default function Profile() {
                               <Button
                                 onClick={async () => {
                                   await handleSaveSettings();
-                                  // reflect immediately in summary (already using local state), then close
                                   setSettingsOpen(false);
                                 }}
                                 disabled={savingSettings}
