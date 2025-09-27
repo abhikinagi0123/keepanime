@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { useCart } from "@/hooks/use-cart";
 import { useMutation } from "convex/react";
@@ -32,6 +33,8 @@ export default function Profile() {
   const [phone, setPhone] = useState<string>((user as any)?.phone ?? "");
   const [address, setAddress] = useState<string>((user as any)?.address ?? "");
   const [paymentMethod, setPaymentMethod] = useState<string>((user as any)?.paymentMethod ?? "");
+  // Add: notifications preference state
+  const [notifications, setNotifications] = useState<boolean>(Boolean((user as any)?.notifications ?? false));
 
   const inCart = (id: string) => cartItems.some((i) => i.id === id);
   const uniqueCollections = Array.from(
@@ -52,6 +55,8 @@ export default function Profile() {
         phone: phone || undefined,
         address: address || undefined,
         paymentMethod: paymentMethod || undefined,
+        // Add: include notifications
+        notifications,
       });
     } catch {
       // keep UI minimal; errors visible in logs
@@ -461,6 +466,22 @@ export default function Profile() {
                           onChange={(e) => setPaymentMethod(e.target.value)}
                           placeholder="Card ending •••• 4242"
                           disabled={savingSettings}
+                        />
+                      </div>
+
+                      {/* New: Notifications preference */}
+                      <div className="flex items-center justify-between border rounded-md px-3 py-2">
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-0.5">Notifications</div>
+                          <div className="text-xs text-muted-foreground">
+                            Receive product updates and launch alerts
+                          </div>
+                        </div>
+                        <Switch
+                          checked={notifications}
+                          onCheckedChange={setNotifications}
+                          disabled={savingSettings}
+                          aria-label="Toggle notifications"
                         />
                       </div>
                     </div>
