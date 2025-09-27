@@ -103,7 +103,7 @@ export default function Profile() {
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative overflow-hidden rounded-2xl border bg-gradient-to-b from-[#0f0c29] via-[#302b63]/70 to-[#24243e] mb-6"
+                className="relative overflow-hidden rounded-2xl border bg-gradient-to-b from-white via-primary/5 to-muted/20 mb-6"
               >
                 <div className="px-6 sm:px-10 py-8">
                   <div className="flex flex-col items-center text-center">
