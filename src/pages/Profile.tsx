@@ -107,15 +107,8 @@ export default function Profile() {
               >
                 <div className="px-6 sm:px-10 py-6">
                   {/* Adjust grid to add a right-side column on medium screens */}
-                  <div className="grid grid-cols-1 md:grid-cols-[auto,1fr,280px] items-start gap-6 lg:gap-8 text-left">
-                    <div className="relative shrink-0 mx-auto md:mx-0">
-                      <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-primary/10 ring-2 ring-primary/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center text-2xl font-semibold">
-                        {initials}
-                      </div>
-                      <div className="absolute -inset-1 rounded-full blur-xl bg-primary/10 pointer-events-none" />
-                    </div>
-
-                    <div className="flex-1">
+                  <div className="grid grid-cols-1 md:grid-cols-[1fr,auto,280px] items-start gap-6 lg:gap-8 text-left">
+                    <div className="flex-1 md:col-start-1">
                       <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
                         {user?.name ?? "Unnamed User"}
                       </h2>
@@ -162,6 +155,13 @@ export default function Profile() {
                           Sign Out
                         </Button>
                       </div>
+                    </div>
+
+                    <div className="relative shrink-0 mx-auto md:mx-0 md:col-start-2">
+                      <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-primary/10 ring-2 ring-primary/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center text-2xl font-semibold">
+                        {initials}
+                      </div>
+                      <div className="absolute -inset-1 rounded-full blur-xl bg-primary/10 pointer-events-none" />
                     </div>
 
                     {/* Right-side Quick Summary (desktop and tablet) */}
