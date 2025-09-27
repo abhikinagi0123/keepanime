@@ -85,7 +85,7 @@ export default function Profile() {
           </motion.div>
 
           {!isAuthenticated ? (
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all">
               <CardHeader>
                 <CardTitle>Sign in required</CardTitle>
               </CardHeader>
@@ -166,7 +166,7 @@ export default function Profile() {
 
                     {/* Right-side Quick Summary (desktop and tablet) */}
                     <div className="hidden md:block justify-self-end">
-                      <Card className="border-0 shadow-sm w-[260px]">
+                      <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all w-[260px]">
                         <CardHeader className="pb-2">
                           <CardTitle className="text-base">Quick Summary</CardTitle>
                         </CardHeader>
@@ -207,7 +207,7 @@ export default function Profile() {
                 transition={{ delay: 0.05 }}
                 className="grid grid-cols-1 gap-6"
               >
-                <Card className="border-0 shadow-sm">
+                <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all">
                   <CardHeader>
                     <CardTitle>Account Details</CardTitle>
                   </CardHeader>
@@ -270,7 +270,7 @@ export default function Profile() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-0 shadow-sm">
+                <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all">
                   <CardHeader>
                     <CardTitle>Security</CardTitle>
                   </CardHeader>
@@ -295,7 +295,7 @@ export default function Profile() {
                   transition={{ delay: 0.15 }}
                   className="mt-6"
                 >
-                  <Card className="border-0 shadow-sm">
+                  <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all">
                     <CardHeader>
                       <CardTitle>Recent Favorites</CardTitle>
                     </CardHeader>
@@ -368,7 +368,7 @@ export default function Profile() {
                   transition={{ delay: 0.2 }}
                   className="mt-6"
                 >
-                  <Card className="border-0 shadow-sm">
+                  <Card className="border-0 shadow-sm rounded-xl ring-1 ring-primary/10 hover:shadow-md transition-all">
                     <CardHeader>
                       <CardTitle>My Wishlist</CardTitle>
                     </CardHeader>
@@ -464,7 +464,7 @@ export default function Profile() {
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="px-0 pb-0">
-                        <Card className="border-0 shadow-sm rounded-none border-t">
+                        <Card className="border-0 shadow-sm rounded-none border-t ring-1 ring-primary/10 rounded-b-lg">
                           <CardContent className="space-y-5 pt-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
