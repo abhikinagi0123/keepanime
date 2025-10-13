@@ -106,7 +106,7 @@ export default function Landing() {
             >
               <div className="relative z-10">
                 <img
-                  src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600&h=400&fit=crop"
+                  src="https://harmless-tapir-303.convex.cloud/api/storage/cc992481-11e7-4fdb-975a-235cf64a5af4"
                   alt="3D One Piece Themed Anime Pendrive"
                   className="w-full rounded-2xl shadow-2xl"
                 />
