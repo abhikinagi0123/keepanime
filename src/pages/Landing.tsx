@@ -106,8 +106,8 @@ export default function Landing() {
             >
               <div className="relative z-10">
                 <img
-                  src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=400&fit=crop"
-                  alt="Anime Pendrive Mockup"
+                  src="https://images.unsplash.com/photo-1625948515291-69613efd103f?w=600&h=400&fit=crop"
+                  alt="One Piece Themed Anime Pendrive"
                   className="w-full rounded-2xl shadow-2xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-2xl" />
